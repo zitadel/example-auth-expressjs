@@ -22,13 +22,13 @@ type AuthReq = Request & { user?: ZitadelUser };
 const app: Application = express();
 
 const sessionOpts: SessionOptions = {
-  secret: process.env.SESSION_SECRET ?? 'dev-only-secret',
+  secret: process.env.SESSION_SECRET!,
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 86_400_000, // 24 h
+    maxAge: Number(process.env.SESSION_DURATION!),
   },
 };
 
@@ -38,7 +38,6 @@ app.use(passport.authenticate('session'));
 passport.serializeUser<ZitadelUser>((user, done) => done(null, user));
 passport.deserializeUser<ZitadelUser>((obj, done) => done(null, obj));
 
-/*──────────────── OIDC discovery & strategy ──────────────────────*/
 let strategyName = 'zitadel';
 
 /**
@@ -46,13 +45,10 @@ let strategyName = 'zitadel';
  * Passport strategy. Must be awaited before the server starts listening.
  */
 export async function initializeOIDC(): Promise<void> {
-  const issuer = process.env.ZITADEL_DOMAIN;
-  if (!issuer) throw new Error('ZITADEL_DOMAIN missing');
-
+  const issuer = process.env.ZITADEL_DOMAIN!;
   const clientId = process.env.ZITADEL_CLIENT_ID!;
-  const clientSecret = process.env.ZITADEL_CLIENT_SECRET || undefined;
-  const callbackURL =
-    process.env.ZITADEL_CALLBACK_URL ?? 'http://localhost:3000/auth/callback';
+  const clientSecret = process.env.ZITADEL_CLIENT_SECRET!;
+  const callbackURL = process.env.ZITADEL_CALLBACK_URL!;
 
   const config = await oidc.discovery(new URL(issuer), clientId, clientSecret);
 
@@ -87,7 +83,6 @@ export async function initializeOIDC(): Promise<void> {
   passport.use(strategy);
 }
 
-/*────────────────────── Auth guard ───────────────────────────────*/
 /**
  * Middleware that allows the request through only if the session is
  * authenticated; otherwise redirects the browser to the login route.
@@ -98,7 +93,6 @@ const ensureAuth: RequestHandler = (
   next: NextFunction,
 ) => (req.isAuthenticated() ? next() : res.redirect('/auth/login'));
 
-/*───────────────────────── Routes ────────────────────────────────*/
 /**
  * Landing page — returns a welcome message and the user object when
  * authenticated, or a minimal prompt to start the login flow.
