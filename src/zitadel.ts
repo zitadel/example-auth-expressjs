@@ -1,9 +1,4 @@
-import {
-  NextFunction,
-  Request,
-  Response,
-  Router,
-} from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import * as oidc from 'openid-client';
@@ -22,6 +17,7 @@ export interface ZitadelConfig {
   sessionSecret: string;
   sessionDuration: number;
   nodeEnv?: string;
+  postLogoutURL?: string;
 }
 
 /**
@@ -43,9 +39,11 @@ export async function createZitadelMiddleware(config?: Partial<ZitadelConfig>) {
     clientId: config?.clientId || process.env.ZITADEL_CLIENT_ID!,
     clientSecret: config?.clientSecret || process.env.ZITADEL_CLIENT_SECRET!,
     callbackURL: config?.callbackURL || process.env.ZITADEL_CALLBACK_URL!,
+    postLogoutURL:
+      config?.postLogoutURL || process.env.ZITADEL_POST_LOGOUT_URL!,
     sessionSecret: config?.sessionSecret || process.env.SESSION_SECRET!,
     sessionDuration:
-      config?.sessionDuration || Number(process.env.SESSION_DURATION!),
+      config?.sessionDuration || Number(process.env.SESSION_DURATION || '3600'),
     nodeEnv: config?.nodeEnv || process.env.NODE_ENV,
   };
 
@@ -133,7 +131,8 @@ export async function createZitadelMiddleware(config?: Partial<ZitadelConfig>) {
       req.logout(() => {
         res.redirect(
           oidc.buildEndSessionUrl(oidcConfig, {
-            post_logout_redirect_uri: `${req.protocol}://${req.host}`,
+            post_logout_redirect_uri:
+              zitadelConfig.postLogoutURL || `${req.protocol}://${req.host}`,
             state: randomUUID(),
           }).href,
         );
