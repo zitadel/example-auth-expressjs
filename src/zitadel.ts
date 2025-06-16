@@ -2,7 +2,6 @@ import { NextFunction, Request, Response, Router } from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import * as oidc from 'openid-client';
-import * as client from 'openid-client';
 import { Strategy as OpenIDConnectStrategy } from 'openid-client/passport';
 import { ZitadelUser } from './types.js';
 import { randomUUID } from 'node:crypto';
@@ -18,6 +17,7 @@ export interface ZitadelConfig {
   sessionDuration: number;
   nodeEnv?: string;
   postLogoutURL?: string;
+  postLoginURL?: string;
 }
 
 /**
@@ -32,8 +32,6 @@ export function ensureAuth(req: AuthReq, res: Response, next: NextFunction) {
  * Creates and configures the Zitadel authentication middleware
  */
 export async function createZitadelMiddleware(config?: Partial<ZitadelConfig>) {
-  const router = Router();
-
   const zitadelConfig: ZitadelConfig = {
     domain: config?.domain || process.env.ZITADEL_DOMAIN!,
     clientId: config?.clientId || process.env.ZITADEL_CLIENT_ID!,
@@ -41,6 +39,7 @@ export async function createZitadelMiddleware(config?: Partial<ZitadelConfig>) {
     callbackURL: config?.callbackURL || process.env.ZITADEL_CALLBACK_URL!,
     postLogoutURL:
       config?.postLogoutURL || process.env.ZITADEL_POST_LOGOUT_URL!,
+    postLoginURL: config?.postLoginURL || process.env.ZITADEL_POST_LOGIN_URL!,
     sessionSecret: config?.sessionSecret || process.env.SESSION_SECRET!,
     sessionDuration:
       config?.sessionDuration || Number(process.env.SESSION_DURATION || '3600'),
@@ -61,8 +60,7 @@ export async function createZitadelMiddleware(config?: Partial<ZitadelConfig>) {
       callbackURL: zitadelConfig.callbackURL,
     },
     (
-      tokenSet: client.TokenEndpointResponse &
-        client.TokenEndpointResponseHelpers,
+      tokenSet: oidc.TokenEndpointResponse & oidc.TokenEndpointResponseHelpers,
       done: passport.AuthenticateCallback,
     ): void => {
       const claims = tokenSet.claims()!;
@@ -78,6 +76,7 @@ export async function createZitadelMiddleware(config?: Partial<ZitadelConfig>) {
 
   passport.use(strategy);
 
+  const router = Router();
   router.use(
     session({
       secret: zitadelConfig.sessionSecret,
@@ -116,7 +115,7 @@ export async function createZitadelMiddleware(config?: Partial<ZitadelConfig>) {
     (req: AuthReq, res: Response, next: NextFunction) => {
       passport.authenticate('zitadel', {
         failureRedirect: '/auth/error',
-        successRedirect: '/profile',
+        successRedirect: zitadelConfig.postLoginURL || '/profile',
       })(req, res, next);
     },
   );
@@ -130,11 +129,13 @@ export async function createZitadelMiddleware(config?: Partial<ZitadelConfig>) {
     (req: AuthReq, res: Response, _next: NextFunction) => {
       req.logout(() => {
         res.redirect(
-          oidc.buildEndSessionUrl(oidcConfig, {
-            post_logout_redirect_uri:
-              zitadelConfig.postLogoutURL || `${req.protocol}://${req.host}`,
-            state: randomUUID(),
-          }).href,
+          oidc
+            .buildEndSessionUrl(oidcConfig, {
+              post_logout_redirect_uri:
+                zitadelConfig.postLogoutURL || `${req.protocol}://${req.host}`,
+              state: randomUUID(),
+            })
+            .toString(),
         );
       });
     },
