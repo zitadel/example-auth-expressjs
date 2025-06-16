@@ -10,10 +10,10 @@ Explore our complete example application to see this in action.
 
 ## Resources
 
-* **Example App Repository:** [Link to your future GitHub repository]
-* **Express.js Documentation:** <https://expressjs.com/>
-* **Passport.js Documentation:** <http://www.passportjs.org/>
-* **Express Session Middleware:** <https://expressjs.com/en/resources/middleware/session.html>
+- **Example App Repository:** [Link to your future GitHub repository]
+- **Express.js Documentation:** <https://expressjs.com/>
+- **Passport.js Documentation:** <http://www.passportjs.org/>
+- **Express Session Middleware:** <https://expressjs.com/en/resources/middleware/session.html>
 
 ## SDK
 
@@ -28,8 +28,9 @@ The example repository includes a complete Express.js application, ready to run,
 ### Prerequisites
 
 Before you begin, ensure you have the following installed on your system:
-* Node.js (v20 or later is recommended)
-* npm (usually comes with Node.js) or yarn
+
+- Node.js (v20 or later is recommended)
+- npm (usually comes with Node.js) or yarn
 
 ### Configuration
 
@@ -76,12 +77,13 @@ npm install
 # 3. Start the development server
 npm start
 ```
+
 The application will now be running at `http://localhost:3000`.
 
 ### What does the Example include?
 
-* A public home page with a "Login" button.
-* A secure user authentication flow using OIDC with PKCE.
-* A middleware to protect specific routes.
-* A private `/profile` page that is only accessible after a user logs in and displays their information.
-* A `/logout` endpoint to clear the user's session.
+- A public home page with a "Login" button.
+- A secure user authentication flow using OIDC with PKCE.
+- A middleware to protect specific routes.
+- A private `/profile` page that is only accessible after a user logs in and displays their information.
+- A `/logout` endpoint to clear the user's session.
