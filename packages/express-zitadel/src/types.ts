@@ -1,7 +1,8 @@
 // noinspection JSUnusedGlobalSymbols
 
 /**
- * Represents a user from Zitadel identity provider with core profile information
+ * Represents a user from Zitadel identity provider with core profile information.
+ * This interface remains the same.
  */
 export interface ZitadelUser {
   id: string;
@@ -10,7 +11,7 @@ export interface ZitadelUser {
   preferred_username: string;
 }
 /**
- * Global Express namespace extension to define the User type for Passport.js
+ * Global Express namespace extension.
  */
 declare global {
   // eslint-disable-next-line

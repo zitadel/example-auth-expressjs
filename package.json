@@ -1,26 +1,24 @@
 {
   "name": "example-expressjs-auth",
   "main": "index.js",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "tsx watch -r dotenv/config src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
+    "build": "npm run build --workspace=express-zitadel && npm run build --workspace=demo-app",
+    "dev": "npm run dev --workspace=demo-app",
+    "start": "npm run start --workspace=demo-app",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "npx eslint .",
-    "lint:fix": "npx eslint . --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "type": "module",
   "license": "Apache-2.0",
-  "dependencies": {
-    "express": "^5.1.0",
-    "express-session": "^1.18.1",
-    "openid-client": "^6.5.1",
-    "passport": "^0.7.0"
-  },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
     "@tsconfig/node20": "^20.1.6",
+    "@types/cookie-parser": "^1.4.9",
     "@types/express": "^5.0.3",
     "@types/express-session": "^1.18.2",
     "@types/node": "^24.0.1",
