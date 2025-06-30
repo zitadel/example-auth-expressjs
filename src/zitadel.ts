@@ -85,7 +85,7 @@ export async function createZitadelMiddleware(config?: Partial<ZitadelConfig>) {
       cookie: {
         httpOnly: true,
         secure: zitadelConfig.nodeEnv === 'production',
-        maxAge: zitadelConfig.sessionDuration,
+        maxAge: zitadelConfig.sessionDuration * 1000,
       },
     }),
   );
