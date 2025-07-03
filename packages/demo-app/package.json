@@ -2,7 +2,7 @@
   "name": "demo-app",
   "version": "1.0.0",
   "private": true,
-  "description": "Demo Express app using the express-zitadel library.",
+  "description": "Demo Express app using the passport-zitadel library.",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
@@ -11,8 +11,16 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "express-zitadel": "1.0.0"
+    "express-handlebars": "^8.0.1",
+    "express-session": "^1.18.1",
+    "handlebars": "^4.7.8",
+    "passport": "^0.7.0",
+    "passport-zitadel": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/express-session": "^1.18.2"
   }
 }

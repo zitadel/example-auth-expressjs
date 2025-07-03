@@ -4,6 +4,9 @@ import tsPlugin from '@typescript-eslint/eslint-plugin';
 import globals from 'globals';
 
 export default [
+  {
+    ignores: ['**/dist/'],
+  },
   js.configs.recommended,
   {
     files: ['**/*.ts', '**/*.tsx'],
