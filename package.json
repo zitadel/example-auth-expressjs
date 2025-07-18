@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "express": "^5.1.0",
-    "express-session": "^1.18.1",
+    "express-session": "^1.18.2",
     "openid-client": "^6.5.1",
     "passport": "^0.7.0"
   },
