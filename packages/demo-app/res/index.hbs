@@ -5,7 +5,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <title>Zitadel PKCE Demo - Login</title>
     <!--suppress JSUnresolvedLibraryURL -->
-	  <script src='https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'></script>
     <link
       rel='icon'
       href='https://www.svgrepo.com/show/376367/express.svg'
@@ -110,7 +110,7 @@
                 <div>
                   <h3 class='text-lg font-semibold text-gray-900 mb-1'>Developer
                     Friendly</h3>
-                  <p class='text-gray-600'>Easy to integrate with comprehensive
+                  <p class='text-gray-600'>Quick to integrate with comprehensive
                     documentation and examples.</p>
                 </div>
               </div>
@@ -137,10 +137,18 @@
                   onclick='startPKCEFlow()'
                   class='w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center space-x-2 mb-6 cursor-pointer'
                 >
-                  <svg class='w-5 h-5' fill='currentColor' viewBox='0 0 20 20'>
+                  <svg
+                    class='w-5 h-5 text-white'
+                    aria-hidden='true'
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='24'
+                    height='24'
+                    fill='currentColor'
+                    viewBox='0 0 24 24'
+                  >
                     <path
                       fill-rule='evenodd'
-                      d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z'
+                      d='M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z'
                       clip-rule='evenodd'
                     />
                   </svg>
@@ -196,27 +204,20 @@
         </div>
       </div>
     </main>
-
-    <!-- Footer -->
     <footer class='bg-gray-100 border-t border-gray-200'>
       <div class='max-w-7xl mx-auto px-6 py-6'>
-        <div class='flex items-center justify-center'>
+        <div class='flex items-center justify-between'>
+          <div class='flex items-center space-x-2'>
+            <span class='text-sm text-gray-600'>Powered by</span>
+            <img
+              src='https://raw.githubusercontent.com/zitadel/zitadel-nextjs/868291c77ff37a56dcfea0378ddfea075dcdbc37/public/zitadel-logo-dark.svg'
+              alt='Zitadel'
+              class='h-12'
+            />
+          </div>
           <div class='flex items-start max-w-2xl'>
-            <div class='flex-shrink-0 mt-0.5'>
-              <svg
-                class='h-5 w-5 text-amber-500'
-                fill='currentColor'
-                viewBox='0 0 20 20'
-              >
-                <path
-                  fill-rule='evenodd'
-                  d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'
-                  clip-rule='evenodd'
-                />
-              </svg>
-            </div>
             <div class='ml-3'>
-              <p class='text-sm text-gray-600 text-center'>
+              <p class='text-sm text-gray-600 text-right'>
                 <strong class='text-gray-800'>Disclaimer:</strong>
                 This is a demonstration application for reference purposes only.
                 Do not use this code in production environments without proper
@@ -227,7 +228,6 @@
         </div>
       </div>
     </footer>
-
     <script>
       function startPKCEFlow() { window.location.href = '{{loginUrl}}'; }
     </script>
