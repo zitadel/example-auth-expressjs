@@ -114,6 +114,12 @@ export async function build(): Promise<Application> {
     });
   });
 
+  app.get('/logout/callback', (_req: Request, res: Response): void => {
+    res.render('loggedout', {
+      //
+    });
+  });
+
   app.get('/auth/error', (_req: Request, res: Response): void => {
     res.status(401).send({ error: 'Authentication failed' });
   });
