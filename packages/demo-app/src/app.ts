@@ -108,6 +108,7 @@ export async function build(): Promise<Application> {
         res.redirect(
           strategy.getLogoutUrl({
             id_token_hint: user?.id_token,
+            client_id: config.ZITADEL_CLIENT_ID,
           }),
         );
       });
