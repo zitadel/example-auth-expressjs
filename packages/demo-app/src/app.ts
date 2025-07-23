@@ -36,7 +36,7 @@ export async function build(): Promise<Application> {
     browserSession({
       name: 'sid',
       keys: [config.SESSION_SECRET],
-      maxAge: config.SESSION_COOKIE_MAX_AGE * 1000, // ms
+      maxAge: config.SESSION_DURATION * 1000,
       httpOnly: true,
       secure: config.SESSION_COOKIE_SECURE,
       sameSite: 'lax',

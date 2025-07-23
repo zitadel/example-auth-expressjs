@@ -102,19 +102,23 @@ The application will now be running at `http://localhost:3000`.
 ## TODOs
 
 ### 1. Security headers (Helmet)
+
 **Not enabled yet.** Add [`helmet`](https://www.npmjs.com/package/helmet) before production:
 
 At minimum, configure:
+
 - `Content-Security-Policy` (CSP)
 - `X-Frame-Options` / `frame-ancestors`
 - `Referrer-Policy`
 - `Permissions-Policy`
 
 ### 2. No CSRF protection yet
+
 State‑changing routes (logout, future POST/PUT/DELETE) are currently vulnerable.
 Add CSRF protection using [`csrf-csrf`](https://www.npmjs.com/package/csrf-csrf)
 
 Remember to:
+
 - Make logout a **POST**.
 - Embed the CSRF token in a hidden form field or send it via `X-CSRF-Token` header.
 - Set cookies with `SameSite=Lax` or stricter.
