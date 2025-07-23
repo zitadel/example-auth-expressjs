@@ -49,37 +49,6 @@ export interface LogoutUrlOptions {
   id_token_hint?: string;
 
   /**
-   * OAuth 2.0 Client Identifier registered at the OP.
-   *
-   * OPTIONAL. When both `client_id` and `id_token_hint` are present, the OP MUST
-   * verify that this client_id matches the one that was used to issue the ID Token.
-   *
-   * Common use cases:
-   *  - You supply `post_logout_redirect_uri` but have no `id_token_hint`.
-   *  - Your `id_token_hint` is a symmetrically encrypted ID Token and the OP
-   *    needs the client_id to decrypt it.
-   *
-   * Sent as the `client_id` query parameter.
-   */
-  client_id?: string;
-
-  /**
-   * Where the OP should redirect the user after logout. Must be pre‑registered.
-   *
-   * Sent as `post_logout_redirect_uri`.
-   * If you always use a single value from config, you can omit this here.
-   */
-  post_logout_redirect_uri?: string;
-
-  /**
-   * Opaque value you generate to protect against CSRF and to correlate the
-   * logout response. Store it and verify it when the user returns.
-   *
-   * Sent as `state`.
-   */
-  state?: string;
-
-  /**
    * Hint about the user being logged out (e.g., their subject identifier or
    * login name). Useful when you don’t have an ID Token.
    *
@@ -148,8 +117,8 @@ export class ZitadelStrategy extends OpenIDConnectStrategy {
     return oidc
       .buildEndSessionUrl(this.config, {
         post_logout_redirect_uri: this.postLogoutRedirectUrl,
+        client_id: this.config.clientMetadata().client_id,
         ...(options.id_token_hint && { id_token_hint: options.id_token_hint }),
-        ...(options.client_id && { client_id: options.client_id }),
         ...(options.logout_hint && { logout_hint: options.logout_hint }),
         ...(options.ui_locales && { ui_locales: options.ui_locales }),
         state: randomUUID(),

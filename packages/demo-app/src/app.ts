@@ -1,12 +1,13 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
-import session from 'express-session';
 import passport from 'passport';
 
+import cookieParser from 'cookie-parser';
 import { ZitadelStrategy, ZitadelUser } from 'passport-zitadel';
 import config from './config.js';
 import { dirname, join } from 'knip/dist/util/path.js';
-import * as exphbs from 'express-handlebars';
+import * as templateLang from 'express-handlebars';
 import { fileURLToPath } from 'node:url';
+import { browserSession } from './session.js';
 
 const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
   return req.isAuthenticated() ? next() : res.redirect('/auth/login');
@@ -18,7 +19,7 @@ export async function build(): Promise<Application> {
   const app: Application = express();
   app.engine(
     'hbs',
-    exphbs.engine({
+    templateLang.engine({
       extname: '.hbs',
       defaultLayout: 'main',
       layoutsDir: join(__dirname, '..', 'res'),
@@ -30,17 +31,16 @@ export async function build(): Promise<Application> {
 
   // Configure express-session, the stateful session equivalent to
   // @fastify/secure-session.
+  app.use(cookieParser());
   app.use(
-    session({
-      secret: config.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: config.SESSION_COOKIE_SECURE,
-        maxAge: config.SESSION_COOKIE_MAX_AGE * 1000,
-        path: config.SESSION_COOKIE_PATH,
-      },
+    browserSession({
+      name: 'sid',
+      keys: [config.SESSION_SECRET],
+      maxAge: config.SESSION_COOKIE_MAX_AGE * 1000, // ms
+      httpOnly: true,
+      secure: config.SESSION_COOKIE_SECURE,
+      sameSite: 'lax',
+      path: config.SESSION_COOKIE_PATH,
     }),
   );
 
@@ -108,7 +108,7 @@ export async function build(): Promise<Application> {
         res.redirect(
           strategy.getLogoutUrl({
             id_token_hint: user?.id_token,
-            client_id: config.ZITADEL_CLIENT_ID,
+            logout_hint: user.sub,
           }),
         );
       });
