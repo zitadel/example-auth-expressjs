@@ -8,6 +8,7 @@ import { dirname, join } from 'knip/dist/util/path.js';
 import * as templateLang from 'express-handlebars';
 import { fileURLToPath } from 'node:url';
 import { browserSession } from './session.js';
+import {ZITADEL_SCOPES} from "./scopes.js";
 
 const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
   return req.isAuthenticated() ? next() : res.redirect('/auth/login');
@@ -56,7 +57,7 @@ export async function build(): Promise<Application> {
     clientId: config.ZITADEL_CLIENT_ID,
     clientSecret: config.ZITADEL_CLIENT_SECRET,
     callbackURL: config.ZITADEL_CALLBACK_URL,
-    scope: 'openid profile email',
+    scope: ZITADEL_SCOPES,
     postLogoutRedirectUrl: config.ZITADEL_POST_LOGOUT_URL,
   });
 
