@@ -127,7 +127,6 @@ Remember to:
 
 ## Resources
 
-- **Example App Repository:** [Link to your future GitHub repository]
 - **Express.js Documentation:** <https://expressjs.com/>
 - **Passport.js Documentation:** <http://www.passportjs.org/>
 - **Express Session Middleware:** <https://expressjs.com/en/resources/middleware/session.html>
