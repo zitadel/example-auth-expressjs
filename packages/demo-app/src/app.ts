@@ -109,7 +109,7 @@ export async function build(): Promise<Application> {
         res.redirect(
           strategy.getLogoutUrl({
             id_token_hint: user?.id_token,
-            logout_hint: user.sub,
+            logout_hint: user?.sub,
           }),
         );
       });
