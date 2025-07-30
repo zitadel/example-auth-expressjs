@@ -13,9 +13,9 @@
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "cookie-session": "^2.1.1",
-    "dotenv": "^16.5.0",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "express-handlebars": "^8.0.1",
+    "express-handlebars": "^8.0.3",
     "handlebars": "^4.7.8",
     "passport": "^0.7.0",
     "passport-zitadel": "1.0.0"
