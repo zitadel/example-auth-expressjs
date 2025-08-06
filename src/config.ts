@@ -1,3 +1,5 @@
+import * as crypto from 'node:crypto';
+
 /**
  * Defines the shape of the configuration variables used throughout the
  * application.
@@ -18,7 +20,7 @@ interface Config {
    * for confidential clients (like web servers) and should be kept
    * secure.
    */
-  ZITADEL_CLIENT_SECRET?: string;
+  ZITADEL_CLIENT_SECRET: string;
   /**
    * The full URL where ZITADEL will redirect back to after a successful
    * authentication. This must exactly match one of the redirect URIs
@@ -42,12 +44,6 @@ interface Config {
    */
   SESSION_SECRET: string;
   /**
-   * A cryptographic salt used in combination with the session secret to
-   * derive the encryption keys for the session cookie. This should be a
-   * random string of at least 16 characters.
-   */
-  SESSION_SALT: string;
-  /**
    * The duration of the session in milliseconds. This determines how
    * long a user's session will remain valid. Defaults to 1 hour
    * (3,600,000 ms).
@@ -64,14 +60,6 @@ interface Config {
    * certain features, like secure cookies.
    */
   NODE_ENV?: string;
-  /**
-   * The path for which the session cookie is valid.
-   */
-  SESSION_COOKIE_PATH: string;
-  /**
-   * Determines if the session cookie should only be sent over HTTPS.
-   */
-  SESSION_COOKIE_SECURE: boolean;
 }
 
 /**
@@ -102,25 +90,20 @@ const config: Required<
     | 'ZITADEL_CALLBACK_URL'
     | 'ZITADEL_POST_LOGOUT_URL'
     | 'SESSION_SECRET'
-    | 'SESSION_SALT'
-    | 'SESSION_COOKIE_PATH'
-    | 'SESSION_COOKIE_SECURE'
   >
 > &
   Config = {
   ZITADEL_DOMAIN: new URL(must('ZITADEL_DOMAIN')).origin,
   ZITADEL_CLIENT_ID: must('ZITADEL_CLIENT_ID'),
-  ZITADEL_CLIENT_SECRET: process.env.ZITADEL_CLIENT_SECRET,
+  ZITADEL_CLIENT_SECRET:
+    process.env.ZITADEL_CLIENT_SECRET ?? crypto.randomBytes(12).toString('hex'),
   ZITADEL_CALLBACK_URL: must('ZITADEL_CALLBACK_URL'),
   ZITADEL_POST_LOGIN_URL: process.env.ZITADEL_POST_LOGIN_URL ?? '/profile',
   ZITADEL_POST_LOGOUT_URL: process.env.ZITADEL_POST_LOGOUT_URL ?? '/',
   SESSION_SECRET: must('SESSION_SECRET'),
-  SESSION_SALT: must('SESSION_SALT'),
-  SESSION_DURATION: Number(process.env.SESSION_DURATION ?? '3600000'),
+  SESSION_DURATION: Number(process.env.SESSION_DURATION ?? '3600'),
   PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,
-  SESSION_COOKIE_PATH: process.env.SESSION_COOKIE_PATH ?? '/',
-  SESSION_COOKIE_SECURE: process.env.NODE_ENV === 'production',
 };
 
 export default config;
