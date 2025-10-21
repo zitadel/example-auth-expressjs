@@ -3,6 +3,7 @@ import { getSession } from '@auth/express';
 import { authConfig } from './index.js';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     // noinspection JSUnusedGlobalSymbols
     interface Request {
