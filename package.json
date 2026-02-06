@@ -3,12 +3,12 @@
   "main": "index.js",
   "scripts": {
     "prepack": "tsc",
+    "start": "tsx watch -r dotenv/config src/index.ts",
     "dev": "tsx watch -r dotenv/config src/index.ts",
     "build": "tsc",
     "test": "jest --verbose --config=jest.config.mjs --runInBand",
     "test:watch": "npm run test -- --watch",
     "test:debug": "jest --verbose --config=jest.config.mjs --runInBand --detectOpenHandles",
-    "start": "node dist/index.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
