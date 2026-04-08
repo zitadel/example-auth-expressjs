@@ -71,9 +71,11 @@ export async function build(): Promise<Application> {
    * If validation is successful, it clears the user's session cookies and
    * redirects to a success page. Otherwise, it redirects to an error page.
    *
-   * @param request - The incoming Next.js request object, which contains the
+   * @param req - The incoming Express request object, which contains the
    * URL and its search parameters, including the `state` from the IdP.
-   * @returns A NextResponse object that either redirects the user to a success
+   * @param res - The Express response object, used to send the redirect and
+   * the cookie-clearing headers.
+   * @returns A redirect response that either redirects the user to a success
    * or error page. Upon success, it includes headers to delete session cookies.
    */
   app.get('/auth/logout/callback', async (req: Request, res: Response) => {
@@ -82,6 +84,12 @@ export async function build(): Promise<Application> {
 
     if (state && logoutStateCookie && state === logoutStateCookie) {
       res.setHeader('Clear-Site-Data', '"cookies"');
+      for (const name of Object.keys(req.cookies)) {
+        if (name.includes('authjs.')) {
+          res.clearCookie(name, { path: '/' });
+        }
+      }
+      res.clearCookie('logout_state', { path: '/auth/logout/callback' });
       res.redirect('/auth/logout/success');
     } else {
       const reason = encodeURIComponent('Invalid or missing state parameter.');
