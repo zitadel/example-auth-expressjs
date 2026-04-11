@@ -1,3 +1,4 @@
 module.exports = {
-  ignoreDependencies: ['handlebars'],
+  ignore: ['commitlint.config.js'],
+  ignoreDependencies: ['@commitlint/config-conventional', 'handlebars'],
 };
