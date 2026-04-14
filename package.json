@@ -1,5 +1,6 @@
 {
   "name": "example-expressjs-auth",
+  "private": true,
   "scripts": {
     "prepack": "tsc",
     "start": "tsx watch -r dotenv/config src/index.ts",
