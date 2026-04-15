@@ -98,7 +98,7 @@ export async function build(): Promise<Application> {
   });
 
   /**
-   * GET /auth/signin
+   * GET /auth/login
    *
    * Renders a custom sign-in page that displays available authentication providers
    * and handles authentication errors with user-friendly messaging. This page is
@@ -122,54 +122,20 @@ export async function build(): Promise<Application> {
    * Configuration, OAuthCallback, and others, displaying contextual messages
    * via the getMessage utility function.
    *
-   * The page specifically looks for the 'zitadel' provider to match the Svelte
+   * The page specifically looks for the 'zitadel' provider to match the original
    * implementation behavior, showing only that provider's sign-in option even
    * if multiple providers are configured.
    *
    * @param req - Express Request object containing query parameters:
    *              - callbackUrl: URL to redirect after successful authentication
    *              - error: Auth.js error code for display (optional)
-   * @param res - Express Response object used to render the sign-in template
+   * @param res - Express Response object used to render the login template
    */
-  /**
-   * GET /auth/signin
-   *
-   * Renders a custom sign-in page that displays available authentication providers
-   * and handles authentication errors with user-friendly messaging. This page is
-   * shown when users need to authenticate, either by visiting directly or after
-   * being redirected from protected routes via the requireAuth middleware.
-   *
-   * The sign-in page provides a branded authentication experience that matches the
-   * application's design system, rather than using Auth.js default pages. It
-   * supports error display, callback URL preservation, and CSRF protection via
-   * client-side JavaScript.
-   *
-   * Authentication flow:
-   * 1. User visits protected route without session
-   * 2. requireAuth redirects to /auth/signin?callbackUrl=<original-url>
-   * 3. This route renders custom sign-in page with available providers
-   * 4. User selects provider, CSRF token is fetched and added via JavaScript
-   * 5. Form submits to /auth/signin/[provider] to initiate OAuth flow
-   * 6. After successful authentication, user is redirected to callbackUrl
-   *
-   * Error handling supports all Auth.js error types including AccessDenied,
-   * Configuration, OAuthCallback, and others, displaying contextual messages
-   * via the getMessage utility function.
-   *
-   * The page specifically looks for the 'zitadel' provider to match the Svelte
-   * implementation behavior, showing only that provider's sign-in option even
-   * if multiple providers are configured.
-   *
-   * @param req - Express Request object containing query parameters:
-   *              - callbackUrl: URL to redirect after successful authentication
-   *              - error: Auth.js error code for display (optional)
-   * @param res - Express Response object used to render the sign-in template
-   */
-  app.get('/auth/signin', async (req: Request, res: Response) => {
+  app.get('/auth/login', async (req: Request, res: Response) => {
     const callbackUrl = req.query.callbackUrl;
     const error = req.query.error;
 
-    res.render('auth/signin', {
+    res.render('auth/login', {
       providers: authConfig.providers.map((provider) => {
         const config = typeof provider === 'function' ? provider() : provider;
         return {
