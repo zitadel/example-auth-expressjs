@@ -50,7 +50,7 @@ interface Config {
    */
   SESSION_DURATION: number;
   /**
-   * The network port on which the Fastify server will listen for
+   * The network port on which the Express server will listen for
    * incoming connections. Defaults to 3000 if not specified.
    */
   PORT?: string;
