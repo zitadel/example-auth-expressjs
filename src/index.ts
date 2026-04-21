@@ -6,7 +6,7 @@ async function startServer(): Promise<void> {
   const PORT = process.env.PORT || 3000;
 
   app.listen(PORT, (): void => {
-    console.log(`Stateless server with express-jwt running on port ${PORT}`);
+    console.log(`Stateless server with Express running on port ${PORT}`);
   });
 }
 
