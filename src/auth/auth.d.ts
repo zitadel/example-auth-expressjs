@@ -1,7 +1,7 @@
 import '@auth/express';
 
 /**
- * Extends NextAuth.js Session interface to include ZITADEL-specific tokens.
+ * Extends Auth.js Session interface to include ZITADEL-specific tokens.
  *
  * This makes ZITADEL tokens available throughout your application via the
  * useSession() hook and getServerSession() function.
@@ -19,10 +19,10 @@ declare module '@auth/express' {
 }
 
 /**
- * Extends NextAuth.js JWT interface to store all necessary tokens and metadata.
+ * Extends Auth.js JWT interface to store all necessary tokens and metadata.
  *
  * This internal interface stores tokens securely in the encrypted JWT that
- * NextAuth uses for session management.
+ * Auth.js uses for session management.
  */
 declare module '@auth/core/jwt' {
   // noinspection JSUnusedGlobalSymbols
