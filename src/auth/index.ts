@@ -2,9 +2,9 @@ import Zitadel from '@auth/core/providers/zitadel';
 import { randomUUID } from 'crypto';
 import * as oidc from 'openid-client';
 import type { JWT } from '@auth/core/jwt';
-import { Account, Profile, User } from '@auth/core/types';
+import { Account, Profile, Session, User } from '@auth/core/types';
 import { ZITADEL_SCOPES } from './scopes.js';
-import { ExpressAuthConfig, Session } from '@auth/express';
+import { ExpressAuthConfig } from '@zitadel/express-auth';
 import { AdapterUser } from '@auth/core/adapters';
 import config from '../config.js';
 

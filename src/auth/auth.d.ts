@@ -1,41 +1,37 @@
-import '@auth/express';
+import type { Session as CoreSession } from '@auth/core/types';
+import type { JWT as CoreJWT } from '@auth/core/jwt';
 
 /**
- * Extends Auth.js Session interface to include ZITADEL-specific tokens.
- *
- * This makes ZITADEL tokens available throughout your application via the
- * useSession() hook and getServerSession() function.
+ * Extend Auth.js core Session to include ZITADEL tokens.
+ * This augmentation must be in your tsconfig's include/typeRoots.
  */
-declare module '@auth/express' {
+declare module '@auth/core/types' {
   // noinspection JSUnusedGlobalSymbols
-  interface Session {
-    /** The OpenID Connect ID token from ZITADEL - used for logout and user identification */
+  interface Session extends CoreSession {
+    /** OpenID Connect ID token */
     idToken?: string;
-    /** The OAuth 2.0 access token - used for making authenticated API calls to ZITADEL */
+    /** OAuth2 access token */
     accessToken?: string;
-    /** Error state indicating if token refresh failed - user needs to re-authenticate */
+    /** Error flag when refresh fails */
     error?: string;
   }
 }
 
 /**
- * Extends Auth.js JWT interface to store all necessary tokens and metadata.
- *
- * This internal interface stores tokens securely in the encrypted JWT that
- * Auth.js uses for session management.
+ * Extend Auth.js core JWT to store ZITADEL token metadata.
  */
 declare module '@auth/core/jwt' {
   // noinspection JSUnusedGlobalSymbols
-  interface JWT {
-    /** The OpenID Connect ID token from ZITADEL */
+  interface JWT extends CoreJWT {
+    /** OpenID Connect ID token */
     idToken?: string;
-    /** The OAuth 2.0 access token for making API calls */
+    /** OAuth2 access token */
     accessToken?: string;
-    /** The OAuth 2.0 refresh token for getting new access tokens */
+    /** OAuth2 refresh token */
     refreshToken?: string;
-    /** Unix timestamp (in milliseconds) when the access token expires */
+    /** Timestamp in ms when access token expires */
     expiresAt?: number;
-    /** Error flag set when token refresh fails */
+    /** Error flag when refresh fails */
     error?: string;
   }
 }

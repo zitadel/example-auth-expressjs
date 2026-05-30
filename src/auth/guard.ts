@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { getSession } from '@auth/express';
+import { getSession } from '@zitadel/express-auth';
 import { authConfig } from './index.js';
 
 declare global {

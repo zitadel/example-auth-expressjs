@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
-import { ExpressAuth, getSession } from '@auth/express';
+import { ExpressAuth, getSession } from '@zitadel/express-auth';
 import config from './config.js';
 import { getMessage } from './auth/message.js';
 import { authConfig, buildLogoutUrl } from './auth/index.js';
@@ -13,6 +13,7 @@ export async function build(): Promise<Application> {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
   const app: Application = express();
+  app.set('trust proxy', true);
   app.engine(
     'hbs',
     templateLang.engine({
@@ -315,7 +316,7 @@ export async function build(): Promise<Application> {
    * @see {@link https://authjs.dev/reference/express} Auth.js Express documentation
    * @see {@link authConfig} Complete authentication configuration
    */
-  app.use('/auth', ExpressAuth(authConfig));
+  app.use('/auth/*path', ExpressAuth(authConfig));
 
   /**
    * GET /profile
