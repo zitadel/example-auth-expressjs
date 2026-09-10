@@ -20,7 +20,7 @@
     "node": ">=22.0.0"
   },
   "dependencies": {
-    "@auth/core": "^0.40.0",
+    "@auth/core": "^0.41.3",
     "@zitadel/express-auth": "^1.0.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
@@ -28,7 +28,7 @@
     "express-handlebars": "^8.0.1",
     "handlebars": "^4.7.9",
     "openid-client": "^6.6.2",
-    "qs": "^6.15.2"
+    "qs": "^6.16.0"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^20.5.0",
